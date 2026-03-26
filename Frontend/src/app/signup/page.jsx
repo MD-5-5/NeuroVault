@@ -1,25 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, signInWithGoogle } from "@/lib/supabase/auth";
+import { signUp, signInWithGoogle } from "@/lib/supabase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import styles from "./login.module.css";
+import styles from "../login/login.module.css"; // reuse same styles
+import signupStyles from "./signup.module.css";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  async function handleLogin(e) {
+  async function handleSignup(e) {
     e.preventDefault();
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
-      await signIn(email, password);
-      router.push("/dashboard");
+      await signUp(email, password, fullName);
+      setSuccess(true);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -36,32 +43,65 @@ export default function LoginPage() {
     }
   }
 
+  if (success) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.glow} aria-hidden="true" />
+        <div className={styles.card}>
+          <div className={styles.logo}>
+            <span className={styles.logoIcon}>⬡</span>
+            <span className={styles.logoText}>NeuroVault</span>
+          </div>
+          <div className={signupStyles.successBox}>
+            <span className={signupStyles.successIcon}>✉️</span>
+            <h2>Check your email</h2>
+            <p>
+              We sent a confirmation link to <strong>{email}</strong>. Click it
+              to activate your vault.
+            </p>
+            <Link href="/login" className={signupStyles.backLink}>
+              ← Back to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.glow} aria-hidden="true" />
 
       <div className={styles.card}>
-        {/* Logo */}
         <div className={styles.logo}>
           <span className={styles.logoIcon}>⬡</span>
           <span className={styles.logoText}>NeuroVault</span>
         </div>
 
-        <h1 className={styles.title}>Welcome back</h1>
-        <p className={styles.subtitle}>Sign in to access your vault</p>
+        <h1 className={styles.title}>Create your vault</h1>
+        <p className={styles.subtitle}>Start securing your knowledge today</p>
 
-        {/* Google OAuth */}
         <button className={styles.googleBtn} onClick={handleGoogle} type="button">
           <GoogleIcon />
           Continue with Google
         </button>
 
-        <div className={styles.divider}>
-          <span>or</span>
-        </div>
+        <div className={styles.divider}><span>or</span></div>
 
-        {/* Email/Password Form */}
-        <form onSubmit={handleLogin} className={styles.form}>
+        <form onSubmit={handleSignup} className={styles.form}>
+          <div className={styles.field}>
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Ada Lovelace"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+              autoComplete="name"
+            />
+          </div>
+
           <div className={styles.field}>
             <label htmlFor="email">Email</label>
             <input
@@ -76,37 +116,28 @@ export default function LoginPage() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="password">
-              Password
-              <Link href="/forgot-password" className={styles.forgot}>
-                Forgot password?
-              </Link>
-            </label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Min. 8 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
 
-          <button
-            type="submit"
-            className={styles.submitBtn}
-            disabled={loading}
-          >
-            {loading ? <span className={styles.spinner} /> : "Sign In"}
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? <span className={styles.spinner} /> : "Create Account"}
           </button>
         </form>
 
         <p className={styles.switchAuth}>
-          Don&apos;t have an account?{" "}
-          <Link href="/signup">Create one →</Link>
+          Already have an account?{" "}
+          <Link href="/login">Sign in →</Link>
         </p>
       </div>
     </div>
