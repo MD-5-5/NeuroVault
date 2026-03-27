@@ -21,15 +21,22 @@ export default function Dashboard() {
   const categories = ['All', 'Technology', 'Science', 'Business', 'Health', 'Education', 'Entertainment', 'Other']
 
   const handleSave = async () => {
-    if (!input.trim()) return
-    setSaving(true)
-    const payload = inputType === 'url'
-      ? { url: input }
-      : { raw_text: input, title: 'Personal Note', type: 'note' }
-    await saveContent(payload)
-    setInput('')
-    setSaving(false)
+  if (!input.trim()) return
+  if (!user?.id) {
+    alert('Please wait, loading user...')
+    return
   }
+  setSaving(true)
+  const payload = inputType === 'url'
+    ? { url: input }
+    : { raw_text: input, title: 'Personal Note', type: 'note' }
+  const result = await saveContent(payload)
+  if (result?.error) {
+    alert('Error: ' + result.error)
+  }
+  setInput('')
+  setSaving(false)
+}
 
   const handleChat = async () => {
     if (!chatQuery.trim()) return

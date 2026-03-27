@@ -22,15 +22,19 @@ export function useContent(userId) {
   }
 
   const saveContent = async (payload) => {
-    const res = await fetch(`${API}/api/content`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, user_id: userId })
-    })
-    const data = await res.json()
-    if (data.success) fetchContent()
-    return data
+  if (!userId) {
+    console.error('No user ID!')
+    return
   }
+  const res = await fetch(`${API}/api/content`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...payload, user_id: userId })
+  })
+  const data = await res.json()
+  if (data.success) fetchContent()
+  return data
+}
 
   const deleteContent = async (id) => {
     await fetch(`${API}/api/content/${id}`, { method: 'DELETE' })
