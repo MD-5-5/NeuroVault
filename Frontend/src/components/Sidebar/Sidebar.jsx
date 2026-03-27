@@ -5,6 +5,7 @@ import styles from './Sidebar.module.css'
 const navItems = [
   { icon: '⚡', label: 'Dashboard', path: '/dashboard' },
   { icon: '🗄️', label: 'My Vault', path: '/vault' },
+  { icon: '🕸️', label: 'Knowledge Graph', path: '/graph' },  // ADD THIS
 ]
 
 export default function Sidebar() {

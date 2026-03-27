@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import KnowledgeGraph from './pages/KnowledgeGraph/KnowledgeGraph'
 import { useAuth } from './hooks/useAuth'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
@@ -22,6 +23,9 @@ export default function App() {
       } />
       <Route path="/vault" element={
         <ProtectedRoute><Vault /></ProtectedRoute>
+      } />
+      <Route path="/graph" element={
+      <ProtectedRoute><KnowledgeGraph /></ProtectedRoute>
       } />
     </Routes>
   )
