@@ -1,0 +1,96 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.logo { font-size: 3rem; margin-bottom: 0.5rem; }
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.field input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.field input:focus { border-color: var(--accent); }
+
+.btn {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  padding: 0.85rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.error {
+  color: var(--error);
+  font-size: 0.85rem;
+  background: rgba(239,68,68,0.1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.link { margin-top: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+.link a { color: var(--accent-light); font-weight: 500; }
+.link a:hover { text-decoration: underline; }

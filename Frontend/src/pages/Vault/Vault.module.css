@@ -1,0 +1,52 @@
+.layout { display: flex; min-height: 100vh; }
+.main { margin-left: 240px; flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.title { font-size: 1.8rem; font-weight: 700; }
+.subtitle { color: var(--text-secondary); }
+
+.searchBox {
+  display: flex;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.searchBox input {
+  flex: 1;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.searchBox button {
+  background: var(--accent);
+  color: white;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.searchBox button:hover { opacity: 0.85; }
+
+.resultInfo {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.resultInfo button {
+  background: transparent;
+  color: var(--accent-light);
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.loading { text-align: center; color: var(--text-muted); padding: 2rem; }
+.empty { text-align: center; padding: 4rem; color: var(--text-muted); background: var(--bg-card); border-radius: 14px; border: 1px dashed var(--border); }

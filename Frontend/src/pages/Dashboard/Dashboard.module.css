@@ -1,0 +1,188 @@
+.layout { display: flex; min-height: 100vh; }
+
+.main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header { display: flex; justify-content: space-between; align-items: center; }
+
+.greeting { font-size: 1.8rem; font-weight: 700; }
+
+.subheading { color: var(--text-secondary); margin-top: 0.25rem; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+.statCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statIcon { font-size: 2rem; }
+.statValue { font-size: 1.6rem; font-weight: 700; color: var(--accent-light); }
+.statLabel { font-size: 0.8rem; color: var(--text-secondary); }
+
+.sectionTitle { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; }
+
+.captureBox {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.typeToggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.typeToggle button {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.activeToggle {
+  background: var(--accent-glow) !important;
+  color: var(--accent-light) !important;
+  border-color: rgba(124,58,237,0.4) !important;
+}
+
+.captureInput { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.captureInput input,
+.captureInput textarea {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  resize: vertical;
+  width: 100%;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.captureInput input:focus,
+.captureInput textarea:focus { border-color: var(--accent); }
+
+.saveBtn {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  align-self: flex-end;
+  transition: all 0.2s;
+}
+
+.saveBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.saveBtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.chat { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.chatBox {
+  display: flex;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.chatBox input {
+  flex: 1;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.chatBox button {
+  background: var(--accent);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.chatBox button:hover { opacity: 0.85; }
+
+.chatAnswer {
+  background: var(--bg-card);
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.chatLabel {
+  font-size: 0.8rem;
+  color: var(--accent-light);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.filterBtn {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.filterBtn:hover { border-color: var(--accent); color: var(--accent-light); }
+
+.activeFilter {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  font-size: 0.85rem;
+  border: 1px solid rgba(124,58,237,0.4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: 14px;
+  border: 1px dashed var(--border);
+}
+
+.loadingText {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+}
