@@ -17,6 +17,13 @@ export default function ContentCard({ item, onDelete }) {
         <span className={styles.category}>{item.category}</span>
         <button className={styles.delete} onClick={() => onDelete(item.id)}>✕</button>
       </div>
+      {item.status === 'processing' || item.status === 'pending' ? (
+      <div className={styles.processing}>
+      <span className={styles.spinner}>⟳</span> AI is analyzing...
+      </div>
+      ) : item.status === 'failed' ? (
+      <div className={styles.failed}>❌ Processing failed</div>
+      ) : null}
 
       <h3 className={styles.title}>{item.title || 'Untitled'}</h3>
       <p className={styles.summary}>{item.summary}</p>
@@ -38,5 +45,6 @@ export default function ContentCard({ item, onDelete }) {
         </span>
       </div>
     </div>
+    
   )
 }

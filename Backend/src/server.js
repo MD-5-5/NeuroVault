@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import contentRoutes from './routes/content.js'
 import searchRoutes from './routes/search.js'
-
+import './workers/contentWorker.js'
 dotenv.config()
 
 const app = express()

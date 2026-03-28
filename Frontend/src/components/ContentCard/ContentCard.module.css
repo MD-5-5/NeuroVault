@@ -96,3 +96,16 @@
 .link:hover { text-decoration: underline; }
 
 .date { font-size: 0.75rem; color: var(--text-muted); }
+
+.processing {
+  font-size: 0.8rem;
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  animation: pulse 1.5s infinite;
+}
+
+.failed { font-size: 0.8rem; color: var(--error); }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }

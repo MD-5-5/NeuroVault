@@ -41,7 +41,18 @@ export function useContent(userId) {
     setContent(prev => prev.filter(c => c.id !== id))
   }
 
-  useEffect(() => { fetchContent() }, [userId])
+  useEffect(() => {
+  const hasProcessing = content.some(
+    c => c.status === 'pending' || c.status === 'processing'
+  )
+  if (!hasProcessing) return
+
+  const interval = setInterval(() => {
+    fetchContent()
+  }, 3000) // check every 3 seconds
+
+  return () => clearInterval(interval)
+}, [content])
 
   return { content, loading, saveContent, deleteContent, fetchContent }
 }
