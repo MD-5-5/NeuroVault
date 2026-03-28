@@ -141,3 +141,18 @@
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
 }
+
+.linkLegend {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.linkLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}

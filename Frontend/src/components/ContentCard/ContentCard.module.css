@@ -109,3 +109,39 @@
 .failed { font-size: 0.8rem; color: var(--error); }
 
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+
+/* ContentCard.module.css */
+.summary {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+
+.expandBtn {
+  background: transparent;
+  color: var(--accent-light);
+  font-size: 0.78rem;
+  padding: 0;
+  margin-top: 0.25rem;
+}
+.userNote {
+  font-size: 0.82rem;
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  gap: 0.5rem;
+  font-style: italic;
+}

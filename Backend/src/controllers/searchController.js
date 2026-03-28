@@ -10,7 +10,7 @@ export async function semanticSearch(req, res) {
     const { data, error } = await supabase.rpc('match_content', {
       query_embedding: JSON.stringify(embedding),
       match_user_id: user_id,
-      match_threshold: 0.5,
+      match_threshold: 0.75,
       match_count: 10
     })
 
@@ -30,9 +30,16 @@ export async function aiChat(req, res) {
     const { data } = await supabase.rpc('match_content', {
       query_embedding: JSON.stringify(embedding),
       match_user_id: user_id,
-      match_threshold: 0.4,
+      match_threshold: 0.6, 
       match_count: 5
     })
+    if (!data || data.length === 0) {
+      return res.json({ 
+        success: true, 
+        answer: "I couldn't find anything in your vault related to that. Try saving some content about this topic first!",
+        sources: []
+      })
+    }
 
     const context = data?.map(item =>
       `Title: ${item.title}\nSummary: ${item.summary}\nTags: ${item.tags?.join(', ')}`

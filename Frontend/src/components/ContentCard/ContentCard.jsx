@@ -1,4 +1,5 @@
 import styles from './ContentCard.module.css'
+import {useState} from 'react'
 
 const typeIcons = {
   article: '📄',
@@ -9,6 +10,7 @@ const typeIcons = {
 }
 
 export default function ContentCard({ item, onDelete }) {
+  const [expanded, setExpanded] = useState(false)
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -26,7 +28,21 @@ export default function ContentCard({ item, onDelete }) {
       ) : null}
 
       <h3 className={styles.title}>{item.title || 'Untitled'}</h3>
-      <p className={styles.summary}>{item.summary}</p>
+      <p  
+        className={`${styles.summary} ${expanded ? styles.expanded : ''}`}
+        onClick={() => setExpanded(!expanded)}
+        style={{ cursor: 'pointer' }}
+        >{item.summary}</p>
+        {item.user_note && (
+  <div className={styles.userNote}>
+    <span>💭</span> {item.user_note}
+      </div>
+      )}
+        {item.summary?.length > 150 && (
+      <button className={styles.expandBtn} onClick={() => setExpanded(!expanded)}>
+      {expanded ? 'Show less ↑' : 'Read more ↓'}
+      </button>
+        )}
 
       <div className={styles.tags}>
         {item.tags?.slice(0, 4).map(tag => (

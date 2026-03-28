@@ -3,6 +3,7 @@ import KnowledgeGraph from './pages/KnowledgeGraph/KnowledgeGraph'
 import { useAuth } from './hooks/useAuth'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
+import AuthCallback from './pages/AuthCallback/AuthCallback'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Vault from './pages/Vault/Vault'
 
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/" element={<Navigate to="/dashboard" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/dashboard" element={
         <ProtectedRoute><Dashboard /></ProtectedRoute>
       } />

@@ -5,7 +5,7 @@ import { detectContentType } from '../services/scraper.js'
 // Save new content — now uses queue!
 export async function saveContent(req, res) {
   try {
-    const { url, raw_text, type, user_id } = req.body
+    const { url, raw_text, type, user_id, user_note } = req.body
 
     if (!user_id) {
       return res.status(400).json({ error: 'user_id is required' })
@@ -15,6 +15,7 @@ export async function saveContent(req, res) {
     const { data, error } = await supabase
       .from('content')
       .insert([{
+        user_note: user_note || null,
         user_id,
         url: url || null,
         raw_text: raw_text || null,

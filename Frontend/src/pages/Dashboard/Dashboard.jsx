@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [chatAnswer, setChatAnswer] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
   const [activeFilter, setActiveFilter] = useState('All')
+  const [userNote, setUserNote] = useState('')
 
   const categories = ['All', 'Technology', 'Science', 'Business', 'Health', 'Education', 'Entertainment', 'Other']
 
@@ -26,9 +27,18 @@ export default function Dashboard() {
     alert('Please wait, loading user...')
     return
   }
+  {inputType === 'url' && (
+  <textarea
+    placeholder="Add a personal note... why are you saving this? (optional)"
+    value={userNote}
+    onChange={e => setUserNote(e.target.value)}
+    rows={2}
+    className={styles.noteInput}
+  />
+)}
   setSaving(true)
   const payload = inputType === 'url'
-    ? { url: input }
+    ? { url: input, user_note: userNote }
     : { raw_text: input, title: 'Personal Note', type: 'note' }
   const result = await saveContent(payload)
   if (result?.error) {
