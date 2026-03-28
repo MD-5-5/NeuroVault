@@ -1,49 +1,56 @@
 import supabase from '../config/supabase.js'
-import { scrapeURL, detectContentType } from '../services/scraper.js'
-import { processWithAI, generateEmbedding } from '../services/aiService.js'
+import contentQueue from '../queues/contentQueue.js'
+import { detectContentType } from '../services/scraper.js'
 
-// Save new content
+// Save new content — now uses queue!
 export async function saveContent(req, res) {
   try {
     const { url, raw_text, type, user_id } = req.body
 
-    let contentData = { url, raw_text, type: type || 'note', user_id }
-
-    // If URL provided, scrape it
-    if (url) {
-      const scraped = await scrapeURL(url)
-      contentData.raw_text = scraped.raw_text
-      contentData.title = scraped.title
-      contentData.type = detectContentType(url)
-      contentData.metadata = { image: scraped.image }
+    if (!user_id) {
+      return res.status(400).json({ error: 'user_id is required' })
     }
 
-    // AI Processing
-    const ai = await processWithAI(
-      contentData.raw_text,
-      contentData.title || 'Untitled'
-    )
-
-    contentData.summary = ai.summary
-    contentData.tags = ai.tags
-    contentData.category = ai.category
-
-    // Generate embedding for semantic search
-    const embeddingText = `${contentData.title} ${ai.summary} ${ai.tags.join(' ')}`
-    const embedding = await generateEmbedding(embeddingText)
-    contentData.embedding = JSON.stringify(embedding)
-
-    // Save to Supabase
+    // Insert placeholder immediately
     const { data, error } = await supabase
       .from('content')
-      .insert([contentData])
+      .insert([{
+        user_id,
+        url: url || null,
+        raw_text: raw_text || null,
+        title: url ? 'Processing...' : (raw_text?.slice(0, 60) + '...'),
+        type: url ? detectContentType(url) : (type || 'note'),
+        status: 'pending',
+        summary: 'AI is analyzing this content...',
+        tags: [],
+        category: 'Other'
+      }])
       .select()
       .single()
 
     if (error) throw error
 
-    res.json({ success: true, content: data })
+    // Add to BullMQ queue
+    const job = await contentQueue.add('process-content', {
+      contentId: data.id,
+      url: url || null,
+      raw_text: raw_text || null,
+      title: data.title,
+      user_id
+    })
+
+    console.log(`📥 Job ${job.id} queued for content ${data.id}`)
+
+    // Return immediately — don't wait for processing!
+    res.json({
+      success: true,
+      content: data,
+      jobId: job.id,
+      message: 'Content saved! AI is processing in background...'
+    })
+
   } catch (err) {
+    console.error('❌ Save error:', err.message)
     res.status(500).json({ error: err.message })
   }
 }
@@ -52,6 +59,8 @@ export async function saveContent(req, res) {
 export async function getContent(req, res) {
   try {
     const { user_id, category, type } = req.query
+
+    if (!user_id) return res.status(400).json({ error: 'user_id required' })
 
     let query = supabase
       .from('content')
@@ -66,6 +75,22 @@ export async function getContent(req, res) {
     if (error) throw error
 
     res.json({ success: true, content: data })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Get job status
+export async function getJobStatus(req, res) {
+  try {
+    const { jobId } = req.params
+    const job = await contentQueue.getJob(jobId)
+    if (!job) return res.status(404).json({ error: 'Job not found' })
+
+    const state = await job.getState()
+    const progress = job.progress
+
+    res.json({ jobId, state, progress })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
