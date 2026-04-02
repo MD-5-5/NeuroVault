@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "NeuroVault",
+  "version": "1.0.0",
+  "description": "Save any webpage to your NeuroVault AI Second Brain",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "identity"
+  ],
+  "host_permissions": [
+    "http://localhost:5000/*",
+    "https://sotapwusshuoomgjydnl.supabase.co/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Save to NeuroVault"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "128": "icons/icon128.png"
+  }
+}
