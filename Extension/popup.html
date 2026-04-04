@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NeuroVault</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- LOGGED OUT STATE -->
+    <div id="loggedOut" class="hidden">
+      <div class="logo-section">
+        <span class="logo">🧠</span>
+        <h1 class="brand">NeuroVault</h1>
+        <p class="tagline">Your AI Second Brain</p>
+      </div>
+      <div class="auth-section">
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="off"/>
+        <input type="password" id="password" placeholder="Password" autocomplete="new-password"/>
+        <p id="authError" class="error hidden"></p>
+        <button id="loginBtn" class="btn-primary">Sign In</button>
+        <p class="auth-hint">Login to start saving pages to your vault</p>
+      </div>
+    </div>
+
+    <!-- LOGGED IN STATE -->
+    <div id="loggedIn" class="hidden">
+      <div class="header">
+        <div class="header-left">
+          <span class="logo-sm">🧠</span>
+          <span class="brand-sm">NeuroVault</span>
+        </div>
+        <button id="logoutBtn" class="btn-logout">Sign out</button>
+      </div>
+
+      <!-- Page info -->
+      <div class="page-info">
+        <div class="page-favicon">🌐</div>
+        <div class="page-details">
+          <p id="pageTitle" class="page-title">Loading...</p>
+          <p id="pageUrl" class="page-url">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Note input -->
+      <div class="note-section">
+        <label class="note-label">💭 Why are you saving this?</label>
+        <textarea
+          id="userNote"
+          placeholder="Add a personal note... (optional)"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Save button -->
+      <button id="saveBtn" class="btn-save">
+        <span id="saveBtnText">⚡ Save to Vault</span>
+      </button>
+
+      <!-- Status messages -->
+      <div id="statusSuccess" class="status success hidden">
+        ✅ Saved! AI is analyzing in background...
+      </div>
+      <div id="statusError" class="status error hidden"></div>
+
+      <!-- Footer link -->
+      <a href="http://localhost:5173/dashboard" target="_blank" class="open-vault">
+        Open NeuroVault →
+      </a>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="loadingState">
+      <span class="logo">🧠</span>
+      <p class="loading-text">Loading...</p>
+    </div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
