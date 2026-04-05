@@ -88,7 +88,7 @@ export default function Landing() {
             <motion.p variants={fadeUp} className={styles.support}>
               Pair it with{' '}
               <a
-                href="https://intelliseek.vercel.app/"
+                href="https://intelli-seek-pro.vercel.app/"
                 target="_blank"
                 rel="noreferrer"
                 className={styles.intelliLink}
