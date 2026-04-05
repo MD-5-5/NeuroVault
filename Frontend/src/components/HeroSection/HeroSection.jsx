@@ -99,7 +99,7 @@ export default function HeroSection() {
 
           <motion.p variants={fadeUp} className={styles.support}>
             Pair it with{' '}
-            <a href="https://intelliseek.vercel.app/" target="_blank" rel="noreferrer" className={styles.intelliSeekHighlight}>
+            <a href="https://intelli-seek-pro.vercel.app/" target="_blank" rel="noreferrer" className={styles.intelliSeekHighlight}>
               IntelliSeek
             </a>{' '}
             and every search you run gets enhanced with your own vault — your personal context meets
