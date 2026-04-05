@@ -9,7 +9,7 @@
     "identity"
   ],
   "host_permissions": [
-    "http://localhost:5000/*",
+    "https://neurovault-2vje.onrender.com/*",
     "https://sotapwusshuoomgjydnl.supabase.co/*"
   ],
   "action": {

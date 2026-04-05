@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:5000'
+const BACKEND_URL = 'https://neurovault-2vje.onrender.com'
 const SUPABASE_URL = 'https://sotapwusshuoomgjydnl.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvdGFwd3Vzc2h1b29tZ2p5ZG5sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE2NTksImV4cCI6MjA4OTk4NzY1OX0.ayyF23MXha6NTIiujbm5SHCcGwWAZ65nafyuONZohzQ' 
 
@@ -30,7 +30,7 @@ let currentTab = null
 // ── Init ──
 document.addEventListener('DOMContentLoaded', async () => {
   // Sync dev port gracefully, in production this should be Vercel URL
-  const REACT_FRONTEND_URL = 'http://localhost:5173'
+  const REACT_FRONTEND_URL = 'https://neuro-vault-swart.vercel.app'
   
   vaultLink.addEventListener('click', async (e) => {
     e.preventDefault()
