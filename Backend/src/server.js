@@ -40,3 +40,7 @@ app.get('/health', (req, res) => res.json({ status: 'NeuroVault backend running 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`🧠 NeuroVault backend running on port ${process.env.PORT}`)
 })
+
+app.get("/", (req, res) => {
+  res.send("NeuroVault Backend is Live 🚀");
+});
