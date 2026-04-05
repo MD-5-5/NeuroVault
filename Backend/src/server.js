@@ -26,7 +26,7 @@ const initBucket = async () => {
     const { data: buckets } = await supabase.storage.listBuckets();
     if (!buckets?.find(b => b.name === 'vault-images')) {
       await supabase.storage.createBucket('vault-images', { public: true });
-      console.log('✅ Supabase "vault-images" bucket verified.');
+      console.log('Supabase "vault-images" bucket verified.');
     }
   } catch (error) {
     console.error('Failed to init supabase bucket:', error);
@@ -37,12 +37,12 @@ initBucket();
 app.use('/api/content', contentRoutes)
 app.use('/api/search', searchRoutes)
 
-app.get('/health', (req, res) => res.json({ status: 'NeuroVault backend running ✅' }))
+app.get('/health', (req, res) => res.json({ status: 'NeuroVault backend running' }))
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log(`🧠 NeuroVault backend running on port ${process.env.PORT}`)
+  console.log(`NeuroVault backend running on port ${process.env.PORT}`)
 })
 
 app.get("/", (req, res) => {
-  res.send("NeuroVault Backend is Live 🚀");
+  res.send("NeuroVault Backend is Live ");
 });

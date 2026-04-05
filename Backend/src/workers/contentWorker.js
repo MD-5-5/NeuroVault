@@ -22,13 +22,13 @@ const contentWorker = new Worker('content-processing', async (job) => {
 
     // Step 2 — Scrape if URL AND not Image
     if (url && type !== 'image') {
-      console.log(`🌐 Scraping: ${url}`)
+      console.log(`Scraping: ${url}`)
       const scraped = await scrapeURL(url)
       contentData.raw_text = scraped.raw_text
       contentData.title = scraped.title
       contentData.metadata = { image: scraped.image }
     } else if (type === 'image') {
-      console.log(`🖼️ Skipping text-scrape for Image file...`)
+      console.log(` Skipping text-scrape for Image file...`)
       contentData.raw_text = user_note ? `[Image content context provided by user]: ${user_note}` : `[User uploaded an image without a note.]`
       contentData.title = user_note ? `${user_note.slice(0, 40)}...` : 'Image Upload'
     }
@@ -36,7 +36,7 @@ const contentWorker = new Worker('content-processing', async (job) => {
     await job.updateProgress(35)
 
     // Step 3 — AI Processing
-    console.log(`🧠 Running AI analysis...`)
+    console.log(` Running AI analysis...`)
     const ai = await processWithAI(
       contentData.raw_text,
       contentData.title || 'Untitled'
@@ -45,7 +45,7 @@ const contentWorker = new Worker('content-processing', async (job) => {
     await job.updateProgress(65)
 
     // Step 4 — Generate embedding
-    console.log(`⚡ Generating embedding...`)
+    console.log(` Generating embedding...`)
     const embeddingText = `${contentData.title} ${ai.summary} ${ai.tags.join(' ')}`
     const embedding = await generateEmbedding(embeddingText)
 
@@ -69,12 +69,12 @@ const contentWorker = new Worker('content-processing', async (job) => {
     if (error) throw error
 
     await job.updateProgress(100)
-    console.log(`✅ Content ${contentId} processed successfully`)
+    console.log(` Content ${contentId} processed successfully`)
 
     return { success: true, contentId }
 
   } catch (err) {
-    console.error(`❌ Job ${job.id} failed:`, err.message)
+    console.error(`Job ${job.id} failed:`, err.message)
 
     // Mark as failed in DB
     await supabase
@@ -87,19 +87,19 @@ const contentWorker = new Worker('content-processing', async (job) => {
 
 }, {
   connection: redis,
-  concurrency: 3  // process 3 jobs at once
+  concurrency: 3  
 })
 
 contentWorker.on('completed', (job) => {
-  console.log(`✅ Job ${job.id} completed`)
+  console.log(`Job ${job.id} completed`)
 })
 
 contentWorker.on('failed', (job, err) => {
-  console.error(`❌ Job ${job.id} failed: ${err.message}`)
+  console.error(`Job ${job.id} failed: ${err.message}`)
 })
 
 contentWorker.on('progress', (job, progress) => {
-  console.log(`📊 Job ${job.id}: ${progress}% complete`)
+  console.log(`Job ${job.id}: ${progress}% complete`)
 })
 
 export default contentWorker

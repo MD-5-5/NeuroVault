@@ -25,7 +25,7 @@ export async function aiChat(req, res) {
   try {
     const { query, user_id } = req.body
 
-    // ── 1. Fetch vault-level metadata (for quantitative queries) ──────────
+    // Fetch vault-level metadata (for quantitative queries) 
     const { data: allContent } = await supabase
       .from('content')
       .select('id, title, type, category, tags, created_at, status')
@@ -47,7 +47,7 @@ export async function aiChat(req, res) {
       `- Categories present: ${[...new Set(vaultItems.map(i => i.category).filter(Boolean))].join(', ') || 'none'}`,
     ].join('\n')
 
-    // ── 2. Semantic search for relevant items ─────────────────────────────
+    // Semantic search for relevant items
     const embedding = await generateEmbedding(query)
     const { data: semanticResults } = await supabase.rpc('match_content', {
       query_embedding: JSON.stringify(embedding),
@@ -62,7 +62,7 @@ export async function aiChat(req, res) {
         ).join('\n\n')
       : 'No closely matching items found via semantic search.'
 
-    // ── 3. Combine both into a rich context ───────────────────────────────
+    // Combine both into a rich context
     const fullContext = `${vaultMetadata}\n\nRELEVANT ITEMS:\n${semanticContext}`
 
     const answer = await chatWithVault(query, fullContext)
@@ -130,7 +130,7 @@ export async function hybridVaultSearch(req, res) {
     })
 
   } catch (err) {
-    console.error('❌ Vault context error:', err.message)
+    console.error(' Vault context error:', err.message)
     res.status(500).json({ error: err.message })
   }
 }

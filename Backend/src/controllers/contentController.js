@@ -18,7 +18,6 @@ export async function saveContent(req, res) {
     let resolvedUrl = url || null
     let metadataStore = {}
 
-    // Handle Image Base64 Buffer Uploads
     if (image_base64 && finalType === 'image') {
       const match = image_base64.match(/^data:image\/(\w+);base64,(.+)$/)
       if (match) {
@@ -82,7 +81,7 @@ export async function saveContent(req, res) {
     })
 
   } catch (err) {
-    console.error('❌ Save error:', err.message)
+    console.error('Save error:', err.message)
     res.status(500).json({ error: err.message })
   }
 }

@@ -2,7 +2,7 @@ const BACKEND_URL = 'https://neurovault-2vje.onrender.com'
 const SUPABASE_URL = 'https://sotapwusshuoomgjydnl.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvdGFwd3Vzc2h1b29tZ2p5ZG5sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE2NTksImV4cCI6MjA4OTk4NzY1OX0.ayyF23MXha6NTIiujbm5SHCcGwWAZ65nafyuONZohzQ' 
 
-// ── DOM Elements ──
+// DOM Elements
 const loadingState = document.getElementById('loadingState')
 const loggedOut = document.getElementById('loggedOut')
 const loggedIn = document.getElementById('loggedIn')
@@ -27,7 +27,7 @@ const vaultLink = document.getElementById('vaultLink')
 let currentUser = null
 let currentTab = null
 
-// ── Init ──
+// Init
 document.addEventListener('DOMContentLoaded', async () => {
   // Sync dev port gracefully, in production this should be Vercel URL
   const REACT_FRONTEND_URL = 'https://neuro-vault-swart.vercel.app'
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })
 
-// ── LOGIN ROUTINE ──
+// LOGIN ROUTINE
 loginBtn.addEventListener('click', async () => {
   const email = emailInput.value.trim()
   const password = passwordInput.value.trim()
@@ -118,7 +118,7 @@ logoutBtn.addEventListener('click', async () => {
   showLoggedOut()
 })
 
-// ── SAVE ROUTINE ──
+// SAVE ROUTINE
 saveBtn.addEventListener('click', async () => {
   if (!currentTab?.url) {
     showSaveError('Could not read page URL context')
@@ -145,8 +145,8 @@ saveBtn.addEventListener('click', async () => {
       throw new Error('No active session found')
     }
 
-    console.log('📤 Sending save request to backend...')
-    console.log(`🔑 Token (last 10 chars): ...${stored.access_token.slice(-10)}`)
+    console.log('Sending save request to backend...')
+    console.log(`Token (last 10 chars): ...${stored.access_token.slice(-10)}`)
 
     const res = await fetch(`${BACKEND_URL}/api/content`, {
       method: 'POST',
@@ -175,14 +175,14 @@ saveBtn.addEventListener('click', async () => {
         saveBtn.disabled = false
       }, 3000)
     } else {
-      console.error(`❌ Backend Error: ${data.error || 'Unknown error'}`)
+      console.error(`Backend Error: ${data.error || 'Unknown error'}`)
       showSaveError(data.error || 'Failed to save to Vault')
       saveBtn.disabled = false
       saveBtnText.textContent = 'Save to Vault'
     }
 
   } catch (err) {
-    console.error(`❌ Catch Error: ${err.message}`)
+    console.error(`Catch Error: ${err.message}`)
     showSaveError('Unauthorized. Please login again.')
     saveBtn.disabled = false
     saveBtnText.textContent = 'Save to Vault'
