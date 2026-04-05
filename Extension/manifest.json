@@ -10,7 +10,8 @@
   ],
   "host_permissions": [
     "https://neurovault-2vje.onrender.com/*",
-    "https://sotapwusshuoomgjydnl.supabase.co/*"
+    "https://sotapwusshuoomgjydnl.supabase.co/*",
+    "chrome-extension://*/*"
   ],
   "action": {
     "default_popup": "popup.html",

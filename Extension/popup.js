@@ -142,7 +142,7 @@ saveBtn.addEventListener('click', async () => {
 
     const res = await fetch(`${BACKEND_URL}/api/content`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${stored.access_token}` },
       body: JSON.stringify({
         url: currentTab.url,
         user_id: currentUser.id,
@@ -168,7 +168,7 @@ saveBtn.addEventListener('click', async () => {
     }
 
   } catch (err) {
-    showSaveError('Backend unreachable. Ensure services are running.')
+    showSaveError('Unauthorized. Please login again.')
     saveBtn.disabled = false
     saveBtnText.textContent = 'Save to Vault'
   }
