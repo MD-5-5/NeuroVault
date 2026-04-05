@@ -139,16 +139,29 @@ saveBtn.addEventListener('click', async () => {
 
   try {
     const note = userNote.value.trim()
+    const stored = await getStoredSession()
+    
+    if (!stored?.access_token) {
+      throw new Error('No active session found')
+    }
+
+    console.log('📤 Sending save request to backend...')
+    console.log(`🔑 Token (last 10 chars): ...${stored.access_token.slice(-10)}`)
 
     const res = await fetch(`${BACKEND_URL}/api/content`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${stored.access_token}` },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${stored.access_token}` 
+      },
       body: JSON.stringify({
         url: currentTab.url,
         user_id: currentUser.id,
         user_note: note || null
       })
     })
+
+    console.log(`📡 Response Status: ${res.status}`)
 
     const data = await res.json()
 
@@ -162,12 +175,14 @@ saveBtn.addEventListener('click', async () => {
         saveBtn.disabled = false
       }, 3000)
     } else {
+      console.error(`❌ Backend Error: ${data.error || 'Unknown error'}`)
       showSaveError(data.error || 'Failed to save to Vault')
       saveBtn.disabled = false
       saveBtnText.textContent = 'Save to Vault'
     }
 
   } catch (err) {
+    console.error(`❌ Catch Error: ${err.message}`)
     showSaveError('Unauthorized. Please login again.')
     saveBtn.disabled = false
     saveBtnText.textContent = 'Save to Vault'

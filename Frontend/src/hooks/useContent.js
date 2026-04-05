@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { supabase } from '../lib/supabase'
 
 const API = import.meta.env.VITE_BACKEND_URL
 
@@ -11,8 +12,14 @@ export function useContent(userId) {
     if (!userId) return
     setLoading(true)
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const headers = { 'Content-Type': 'application/json' }
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+
       const params = new URLSearchParams({ user_id: userId, ...filters })
-      const res = await fetch(`${API}/api/content?${params}`)
+      const res = await fetch(`${API}/api/content?${params}`, { headers })
       const data = await res.json()
       setContent(data.content || [])
     } catch (err) {
@@ -24,9 +31,15 @@ export function useContent(userId) {
 
   const saveContent = async (payload) => {
     if (!userId) return
+    const { data: { session } } = await supabase.auth.getSession()
+    const headers = { 'Content-Type': 'application/json' }
+    if (session?.access_token) {
+      headers['Authorization'] = `Bearer ${session.access_token}`
+    }
+
     const res = await fetch(`${API}/api/content`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ ...payload, user_id: userId })
     })
     const data = await res.json()

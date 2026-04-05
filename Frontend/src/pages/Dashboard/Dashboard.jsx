@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { supabase } from '../../lib/supabase'
 import { useContent } from '../../hooks/useContent'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, FileText, StickyNote, Video, Link2, Zap, Plus, Loader2, Image as ImageIcon, Sparkles, Network, Search } from 'lucide-react'
@@ -68,9 +69,15 @@ export default function Dashboard() {
     setChatAnswer('')
     
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const headers = { 'Content-Type': 'application/json' }
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+
       const res = await fetch(`${API}/api/search/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ query: chatQuery, user_id: user?.id })
       })
       const data = await res.json()

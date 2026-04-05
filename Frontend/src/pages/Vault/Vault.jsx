@@ -1,5 +1,6 @@
 import { useAuth } from '../../hooks/useAuth'
 import { useContent } from '../../hooks/useContent'
+import { supabase } from '../../lib/supabase'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import ContentCard from '../../components/ContentCard/ContentCard'
 import styles from './Vault.module.css'
@@ -30,9 +31,15 @@ export default function Vault() {
     setSearching(true)
     setResults(null)
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const headers = { 'Content-Type': 'application/json' }
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`
+      }
+
       const res = await fetch(`${API}/api/search/semantic`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ query: search, user_id: user?.id })
       })
       const data = await res.json()
