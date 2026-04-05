@@ -1,0 +1,273 @@
+/* ── Wrapper ─────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(135deg, #0f0f14 0%, #111118 60%, #0c0c14 100%);
+  padding: 3rem 3.5rem;
+  overflow: hidden;
+  box-shadow:
+    0 0 80px rgba(99, 102, 241, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Decorations ─────────────────────────────────────────── */
+.gridBg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, transparent 30%, black 80%);
+}
+
+.gradientOrb1 {
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.gradientOrb2 {
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* ── Inner layout ────────────────────────────────────────── */
+.inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* ── LEFT ────────────────────────────────────────────────── */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #818cf8;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.heading {
+  font-size: 2.9rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #818cf8 0%, #60a5fa 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sub {
+  font-size: 0.97rem;
+  color: #9ca3af;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0;
+}
+
+.sub strong {
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+.support {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0;
+}
+
+.intelliSeekHighlight {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #9ca3af;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.pill:hover {
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #e5e7eb;
+}
+
+/* ── RIGHT — Flow diagram ────────────────────────────────── */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.flowLabel {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #4b5563;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.flowItem {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  cursor: default;
+  position: relative;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+.step:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--step-color, #818cf8);
+  box-shadow: 0 0 18px var(--step-glow, rgba(129,140,248,0.25));
+}
+
+.stepIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--step-color, #818cf8);
+  flex-shrink: 0;
+  transition: box-shadow 0.25s;
+}
+
+.step:hover .stepIcon {
+  box-shadow: 0 0 12px var(--step-glow, rgba(129,140,248,0.4));
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.stepLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  line-height: 1.2;
+}
+
+.stepSub {
+  font-size: 0.72rem;
+  color: #6b7280;
+}
+
+.stepNum {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #374151;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  padding: 0.2rem;
+  transform-origin: top center;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero {
+    padding: 2rem 1.5rem;
+  }
+
+  .heading {
+    font-size: 2.1rem;
+  }
+
+  .right {
+    margin-top: 0.5rem;
+  }
+}

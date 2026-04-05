@@ -5,7 +5,7 @@ import { scrapeURL, detectContentType } from '../services/scraper.js'
 import { processWithAI, generateEmbedding } from '../services/aiService.js'
 
 const contentWorker = new Worker('content-processing', async (job) => {
-  const { contentId, url, raw_text, title, user_id } = job.data
+  const { contentId, url, raw_text, title, user_id, type, user_note, metadata } = job.data
 
   console.log(`🔄 Processing job ${job.id} for content ${contentId}`)
 
@@ -18,15 +18,19 @@ const contentWorker = new Worker('content-processing', async (job) => {
 
     await job.updateProgress(10)
 
-    let contentData = { raw_text, title }
+    let contentData = { raw_text, title, metadata: metadata || {} }
 
-    // Step 2 — Scrape if URL
-    if (url) {
+    // Step 2 — Scrape if URL AND not Image
+    if (url && type !== 'image') {
       console.log(`🌐 Scraping: ${url}`)
       const scraped = await scrapeURL(url)
       contentData.raw_text = scraped.raw_text
       contentData.title = scraped.title
       contentData.metadata = { image: scraped.image }
+    } else if (type === 'image') {
+      console.log(`🖼️ Skipping text-scrape for Image file...`)
+      contentData.raw_text = user_note ? `[Image content context provided by user]: ${user_note}` : `[User uploaded an image without a note.]`
+      contentData.title = user_note ? `${user_note.slice(0, 40)}...` : 'Image Upload'
     }
 
     await job.updateProgress(35)

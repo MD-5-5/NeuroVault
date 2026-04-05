@@ -7,12 +7,14 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div id="app">
+  <div id="app" class="fade-in">
 
     <!-- LOGGED OUT STATE -->
-    <div id="loggedOut" class="hidden">
+    <div id="loggedOut" class="hidden slide-up">
       <div class="logo-section">
-        <span class="logo">🧠</span>
+        <div class="logo-wrapper">
+          <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>
+        </div>
         <h1 class="brand">NeuroVault</h1>
         <p class="tagline">Your AI Second Brain</p>
       </div>
@@ -26,27 +28,34 @@
     </div>
 
     <!-- LOGGED IN STATE -->
-    <div id="loggedIn" class="hidden">
+    <div id="loggedIn" class="hidden slide-up">
       <div class="header">
-        <div class="header-left">
-          <span class="logo-sm">🧠</span>
-          <span class="brand-sm">NeuroVault</span>
+        <div class="header-user">
+          <div id="userAvatar" class="user-avatar">?</div>
+          <div class="user-details">
+            <span id="userName" class="user-name">Loading...</span>
+            <span class="user-workspace">Personal Vault</span>
+          </div>
         </div>
-        <button id="logoutBtn" class="btn-logout">Sign out</button>
+        <button id="logoutBtn" class="btn-icon" title="Sign Out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </button>
       </div>
 
       <!-- Page info -->
       <div class="page-info">
-        <div class="page-favicon">🌐</div>
+        <div class="page-favicon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
         <div class="page-details">
-          <p id="pageTitle" class="page-title">Loading...</p>
+          <p id="pageTitle" class="page-title">Detecting page...</p>
           <p id="pageUrl" class="page-url">Loading...</p>
         </div>
       </div>
 
       <!-- Note input -->
       <div class="note-section">
-        <label class="note-label">💭 Why are you saving this?</label>
+        <label class="note-label">Why are you saving this?</label>
         <textarea
           id="userNote"
           placeholder="Add a personal note... (optional)"
@@ -55,26 +64,26 @@
       </div>
 
       <!-- Save button -->
-      <button id="saveBtn" class="btn-save">
-        <span id="saveBtnText">⚡ Save to Vault</span>
+      <button id="saveBtn" class="btn-primary">
+        <span id="saveBtnText">Save to Vault</span>
       </button>
 
       <!-- Status messages -->
       <div id="statusSuccess" class="status success hidden">
-        ✅ Saved! AI is analyzing in background...
+        Saved! AI is analyzing in background.
       </div>
       <div id="statusError" class="status error hidden"></div>
 
       <!-- Footer link -->
-      <a href="http://localhost:5173/dashboard" target="_blank" class="open-vault">
-        Open NeuroVault →
+      <a href="http://localhost:5173/dashboard" id="vaultLink" target="_blank" class="open-vault">
+        Open NeuroVault 
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
 
     <!-- LOADING STATE -->
-    <div id="loadingState">
-      <span class="logo">🧠</span>
-      <p class="loading-text">Loading...</p>
+    <div id="loadingState" class="fade-in">
+      <div class="spinner"></div>
     </div>
 
   </div>

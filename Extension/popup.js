@@ -1,6 +1,6 @@
 const BACKEND_URL = 'http://localhost:5000'
 const SUPABASE_URL = 'https://sotapwusshuoomgjydnl.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvdGFwd3Vzc2h1b29tZ2p5ZG5sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE2NTksImV4cCI6MjA4OTk4NzY1OX0.ayyF23MXha6NTIiujbm5SHCcGwWAZ65nafyuONZohzQ' // paste your anon key here
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvdGFwd3Vzc2h1b29tZ2p5ZG5sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE2NTksImV4cCI6MjA4OTk4NzY1OX0.ayyF23MXha6NTIiujbm5SHCcGwWAZ65nafyuONZohzQ' 
 
 // ── DOM Elements ──
 const loadingState = document.getElementById('loadingState')
@@ -19,21 +19,39 @@ const authError = document.getElementById('authError')
 const statusSuccess = document.getElementById('statusSuccess')
 const statusError = document.getElementById('statusError')
 
+// User Avatar UI
+const userNameEl = document.getElementById('userName')
+const userAvatarEl = document.getElementById('userAvatar')
+const vaultLink = document.getElementById('vaultLink')
+
 let currentUser = null
 let currentTab = null
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', async () => {
-  // Get current tab info
+  // Sync dev port gracefully, in production this should be Vercel URL
+  const REACT_FRONTEND_URL = 'http://localhost:5173'
+  
+  vaultLink.addEventListener('click', async (e) => {
+    e.preventDefault()
+    let url = `${REACT_FRONTEND_URL}/dashboard`
+    const stored = await getStoredSession()
+    
+    if (stored?.access_token && stored?.refresh_token) {
+      url += `?access_token=${stored.access_token}&refresh_token=${stored.refresh_token}`
+    }
+    chrome.tabs.create({ url })
+  })
+
   chrome.runtime.sendMessage({ type: 'GET_ACTIVE_TAB' }, (response) => {
     if (response) {
       currentTab = response
-      pageTitle.textContent = response.title || 'Unknown page'
+      pageTitle.textContent = response.title || 'Unknown Webpage'
       pageUrl.textContent = response.url || ''
     }
   })
 
-  // Check if user is already logged in
+  // Check auth session
   const stored = await getStoredSession()
   if (stored?.access_token && stored?.user) {
     currentUser = stored.user
@@ -43,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })
 
-// LOGIN
+// ── LOGIN ROUTINE ──
 loginBtn.addEventListener('click', async () => {
   const email = emailInput.value.trim()
   const password = passwordInput.value.trim()
@@ -54,11 +72,10 @@ loginBtn.addEventListener('click', async () => {
   }
 
   loginBtn.disabled = true
-  loginBtn.textContent = 'Signing in...'
+  loginBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>'
   hideAuthError()
 
   try {
-    // CALL SUPABASE AUTH ENDPOINT (NOT MY BACKEND)
     const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
       method: 'POST',
       headers: {
@@ -71,11 +88,10 @@ loginBtn.addEventListener('click', async () => {
     const data = await res.json()
 
     if (data.error || !data.access_token) {
-      showAuthError(data.error_description || data.msg || 'Login failed')
+      showAuthError(data.error_description || data.msg || 'Login failed Check your credentials.')
       return
     }
 
-    // Store session
     await storeSession({
       access_token: data.access_token,
       refresh_token: data.refresh_token,
@@ -84,9 +100,12 @@ loginBtn.addEventListener('click', async () => {
 
     currentUser = data.user
     showLoggedIn()
+    
+    // Automatically open dashboard after login as requested
+    if (vaultLink) vaultLink.click()
 
   } catch (err) {
-    showAuthError('Connection failed. Is the app running?')
+    showAuthError('Connection failed. Is the environment running?')
   } finally {
     loginBtn.disabled = false
     loginBtn.textContent = 'Sign In'
@@ -99,26 +118,23 @@ logoutBtn.addEventListener('click', async () => {
   showLoggedOut()
 })
 
-// ── Save ──
+// ── SAVE ROUTINE ──
 saveBtn.addEventListener('click', async () => {
   if (!currentTab?.url) {
-    showSaveError('Could not get page URL')
+    showSaveError('Could not read page URL context')
     return
   }
-
   if (!currentUser?.id) {
-    showSaveError('Not logged in')
+    showSaveError('Not authenticated')
     return
   }
-
-  // Don't save chrome:// or extension pages
   if (currentTab.url.startsWith('chrome://') || currentTab.url.startsWith('chrome-extension://')) {
-    showSaveError("Can't save browser internal pages")
+    showSaveError("Cannot save internal browser pages")
     return
   }
 
   saveBtn.disabled = true
-  saveBtnText.textContent = '🧠 Saving...'
+  saveBtnText.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>'
   hideStatus()
 
   try {
@@ -138,38 +154,46 @@ saveBtn.addEventListener('click', async () => {
 
     if (data.success) {
       statusSuccess.classList.remove('hidden')
-      saveBtnText.textContent = '✅ Saved!'
+      saveBtnText.textContent = 'Save to Vault'
       userNote.value = ''
 
-      // Reset after 3 seconds
       setTimeout(() => {
         statusSuccess.classList.add('hidden')
-        saveBtnText.textContent = '⚡ Save to Vault'
         saveBtn.disabled = false
       }, 3000)
     } else {
-      showSaveError(data.error || 'Save failed')
+      showSaveError(data.error || 'Failed to save to Vault')
       saveBtn.disabled = false
-      saveBtnText.textContent = '⚡ Save to Vault'
+      saveBtnText.textContent = 'Save to Vault'
     }
 
   } catch (err) {
-    showSaveError('Backend not reachable. Is it running?')
+    showSaveError('Backend unreachable. Ensure services are running.')
     saveBtn.disabled = false
-    saveBtnText.textContent = '⚡ Save to Vault'
+    saveBtnText.textContent = 'Save to Vault'
   }
 })
 
-// ── Allow Enter key on login ──
 passwordInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') loginBtn.click()
 })
 
-//UI HELPER
+// ── HELPERS ──
+function getDisplayName(user) {
+  if (user.user_metadata?.full_name) return user.user_metadata.full_name
+  if (user.email) return user.email.split('@')[0]
+  return 'User'
+}
+
 function showLoggedIn() {
   loadingState.classList.add('hidden')
   loggedOut.classList.add('hidden')
   loggedIn.classList.remove('hidden')
+
+  // Update User UI Layer
+  const name = getDisplayName(currentUser)
+  userNameEl.textContent = name
+  userAvatarEl.textContent = name.charAt(0).toUpperCase()
 }
 
 function showLoggedOut() {
@@ -188,7 +212,7 @@ function hideAuthError() {
 }
 
 function showSaveError(msg) {
-  statusError.textContent = '❌ ' + msg
+  statusError.textContent = msg
   statusError.classList.remove('hidden')
 }
 
@@ -197,12 +221,10 @@ function hideStatus() {
   statusError.classList.add('hidden')
 }
 
-//STORAGE SESSION
 async function storeSession(session) {
   return chrome.storage.local.set({ neurovault_session: session })
 }
 
-//RETRIEVE SESSION
 async function getStoredSession() {
   return new Promise((resolve) => {
     chrome.storage.local.get('neurovault_session', (result) => {

@@ -1,28 +1,33 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #111118;
-  --bg-card: #16161f;
-  --bg-hover: #1e1e2a;
-  --accent: #7c3aed;
-  --accent-light: #a78bfa;
-  --accent-glow: rgba(124, 58, 237, 0.3);
-  --text-primary: #f0f0ff;
-  --text-secondary: #9090aa;
-  --text-muted: #5a5a70;
-  --border: #2a2a3a;
+  --bg-primary: #080808;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #111114;
+  --bg-hover: #17171d;
+  --accent: #e5e5e5;
+  --accent-light: #ffffff;
+  --accent-brand: #818cf8;
+  --accent-brand-glow: rgba(99, 102, 241, 0.1);
+  --text-primary: #ededed;
+  --text-secondary: #a1a1aa;
+  --text-muted: #6b7280;
+  --border: #1e1e26;
+  --border-hover: #2d2d3a;
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
+  --font-sans: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .loading-screen {
@@ -30,10 +35,18 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  font-size: 1.2rem;
-  color: var(--accent-light);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 a { text-decoration: none; color: inherit; }
-button { cursor: pointer; border: none; outline: none; }
-input, textarea { outline: none; border: none; }
+button { cursor: pointer; border: none; outline: none; transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s; }
+button:focus-visible { outline: 2px solid var(--accent-brand); outline-offset: 2px; }
+input, textarea { outline: none; border: none; transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit; }
+input:hover, textarea:hover { border-color: rgba(255, 255, 255, 0.4); box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); }
+input:focus, textarea:focus, input:focus-visible, textarea:focus-visible { outline: none; border-color: rgba(255, 255, 255, 0.8); box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
+
+/* ── Hide scrollbars (all browsers) ─────── */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none; }
