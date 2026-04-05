@@ -13,7 +13,7 @@ app.use(cors({ origin: [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
-  "https://intelliseek.vercel.app",
+  "https://intelli-seek-pro.vercel.app",
   "https://neuro-vault-swart.vercel.app",
 ]}))
 app.use(express.json({ limit: '20mb' }))
